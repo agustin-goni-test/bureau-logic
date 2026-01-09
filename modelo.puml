@@ -1,0 +1,62 @@
+@startuml
+interface ObtainInfoStrategy {
+  + obtainReport(request): ReportDTO
+}
+
+class PluttoInfoStrategy
+class EquifaxInfoStrategy
+
+ObtainInfoStrategy <|-- PluttoInfoStrategy
+ObtainInfoStrategy <|-- EquifaxInfoStrategy
+
+interface ExternalServiceAdapter {
+  + callAPI(request): RawResponse
+  + mapToReportDTO(raw): ReportDTO
+}
+
+class PluttoAdapter
+class EquifaxAdapter
+
+ExternalServiceAdapter <|-- PluttoAdapter
+ExternalServiceAdapter <|-- EquifaxAdapter
+
+PluttoInfoStrategy --> ExternalServiceAdapter
+EquifaxInfoStrategy --> ExternalServiceAdapter
+
+class ReportRepository {
+  + save(reportDTO)
+  + findByCorrelationId(id): ReportDTO
+}
+
+class PluttoReportRepository
+class EquifaxReportRepository
+
+ReportRepository <|-- PluttoReportRepository
+ReportRepository <|-- EquifaxReportRepository
+
+interface ReportStructureStrategy {
+  + extract(path: string): any
+}
+
+class PluttoExtractor
+class EquifaxExtractor
+
+class PluttoReportEntity
+class EquifaxReportEntity
+
+ReportStructureStrategy <|-- PluttoExtractor
+ReportStructureStrategy <|-- EquifaxExtractor
+
+PluttoExtractor --> PluttoReportEntity
+EquifaxExtractor --> EquifaxReportEntity
+
+EquifaxReportEntity --> EquifaxReportRepository
+PluttoReportEntity --> PluttoReportRepository
+
+class BusinessReportExtractor {
+  + getBusinessOwner(): OwnerDTO
+  + getBusinessAddress(): AddressDTO
+}
+
+BusinessReportExtractor --> ReportStructureStrategy
+@enduml
