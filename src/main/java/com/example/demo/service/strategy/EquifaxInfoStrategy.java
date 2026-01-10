@@ -1,5 +1,7 @@
 package com.example.demo.service.strategy;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -7,6 +9,7 @@ import com.example.demo.service.adapters.ExternalServiceAdapter;
 import com.example.demo.model.dto.ReportDTO;
 import com.example.demo.model.requests.ReportRequest;
 
+import com.example.demo.logging.AppLogger;
 
 
 @Service("equifaxInfoStrategy")
@@ -16,7 +19,11 @@ public class EquifaxInfoStrategy implements ObtainInfoStrategy {
     // una implementación concreta para Equifax
     private final ExternalServiceAdapter adapter;
 
-    public EquifaxInfoStrategy(@Qualifier("equifaxAdapter") ExternalServiceAdapter adapter) {
+    public EquifaxInfoStrategy() {
+        this.adapter = null;
+    } 
+
+    public EquifaxInfoStrategy(@Qualifier("equifaxAdapter") ExternalServiceAdapter adapter, AppLogger appLogger) {
         this.adapter = adapter;
     }
 

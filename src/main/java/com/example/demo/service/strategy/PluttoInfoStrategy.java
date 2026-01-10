@@ -17,6 +17,10 @@ public class PluttoInfoStrategy implements ObtainInfoStrategy {
     // una implementación concreta para Plutto
     private final ExternalServiceAdapter adapter;
 
+    public PluttoInfoStrategy() {
+        this.adapter = null;
+    }
+
     public PluttoInfoStrategy(@Qualifier("pluttoAdapter") ExternalServiceAdapter adapter) {
         this.adapter = adapter;
     }
